@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
  */
 public class MarkovChainDriver {
     public static void main(String[] args) throws FileNotFoundException {
-        MarkovChain mc = new MarkovChain("TrainerFile.txt");
+        MarkovChain mc = new MarkovChain("SpanishTrainer.txt");
         System.out.println("The training file is: " + mc.getFilepath());
         System.out.println("\n\n-BEGIN GENERATED DOCUMENT-\n\n");
         System.out.println(mc.generateText(1000));

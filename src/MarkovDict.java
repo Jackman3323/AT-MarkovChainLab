@@ -47,9 +47,9 @@ public class MarkovDict {
         }
         String cur = "";
         fileScan.useDelimiter(" ");
-        String previous = removePunctuation(fileScan.next());
+        String previous = fileScan.next();
         while(fileScan.hasNext()){
-            cur = removePunctuation(fileScan.next());
+            cur = fileScan.next();
             this.values.add(cur);
             this.keys.add(previous);
             previous = cur;
@@ -66,18 +66,17 @@ public class MarkovDict {
                 this.finalDict.add(new MarkovWord(this.keys.get(i),this.values.get(i),this.finalDict.size()+1));
                 seenKeys.add(this.keys.get(i));
                 this.numWords++;
+//                System.out.print("NEW WORD: " + this.keys.get(i));
+//                System.out.println(". FOLLOWER: " + this.values.get(i));
             }
             else{
+//                System.out.print("REPEAT WORD: " + this.keys.get(i));
+                //System.out.println(". FOLLOWER: " + this.values.get(i));
                 //Repeat word! Add this instance's follower word
                 int index = seenKeys.indexOf(this.keys.get(i));
-                this.finalDict.get(index).addFollower(this.keys.get(i));
+                this.finalDict.get(index).addFollower(this.values.get(i));
             }
         }
-    }
-    //private String removePunctuation(String input): input a string, output a string without all punctuation other than periods
-    private String removePunctuation(String input){
-        input = input.replaceAll("[^a-zA-Z\\.]","");
-        return input;
     }
 
     private MarkovWord getRandomWord(){
@@ -87,6 +86,7 @@ public class MarkovDict {
     private MarkovWord findWordObject(String word){
         for(int i = 0; i < this.numWords; i++){
             if(this.finalDict.get(i).getWord().equals(word)){
+                //System.out.println("TEST" + this.finalDict.get(i).getWord());
                 return this.finalDict.get(i);
             }
         }
@@ -101,6 +101,7 @@ public class MarkovDict {
         StringBuilder finalOutput = new StringBuilder();
         for(int i = 1; i < desiredNumWords; i++){
             finalOutput.append(cur.getWord());
+            finalOutput.append(" ");
             follower = cur.getRandomFollower();
             cur = this.findWordObject(follower);
         }
