@@ -58,7 +58,10 @@ public class MarkovDict {
     private void compileDictionary(){
         ArrayList<String> seenKeys = new ArrayList<String>();
         for(int i = 0; i < this.keys.size(); i++){
-            if(!seenKeys.contains(this.keys.get(i))){
+            if(this.keys.get(i).equals("SKIP_ONE_CYCLE")){
+                //Do nothing, this is for putting multiple scripts in the same file.
+            }
+            else if(!seenKeys.contains(this.keys.get(i))){
                 //New word detected!
                 this.finalDict.add(new MarkovWord(this.keys.get(i),this.values.get(i),this.finalDict.size()+1));
                 seenKeys.add(this.keys.get(i));
@@ -90,7 +93,9 @@ public class MarkovDict {
         return null;
     }
 
-    public String outputString(int desiredNumWords){
+    public String outputString(int desiredNumWords) throws FileNotFoundException {
+        this.parseTrainingFile();
+        this.compileDictionary();
         MarkovWord cur = this.getRandomWord();
         String follower;
         StringBuilder finalOutput = new StringBuilder();

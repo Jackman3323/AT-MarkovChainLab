@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+
 /**
  * MarkovChain.java
  *
@@ -22,9 +24,12 @@ public class MarkovChain {
         this.filepath = filepath;
         this.dict = new MarkovDict(filepath);
     }
-
     //METHODS
-    public void generateText(){
-        
+    public String generateText(int desiredNumWords) throws FileNotFoundException {
+        return this.dict.outputString(desiredNumWords);
+    }
+
+    public String getFilepath() {
+        return filepath;
     }
 }
